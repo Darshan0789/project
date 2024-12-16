@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up</title>
+    <style>
+        body {
+            background-image: url(backimg.avif);
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            position: relative;
+            width: 300px;
+            padding: 20px 30px;
+            border: 5px solid #29302f;
+            animation: running-light 2s linear infinite;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+        }
+
+        @keyframes running-light {
+            0% {
+                box-shadow: 0 0 10px 2px rgb(231, 164, 164), inset 0 0 10px 2px red;
+            }
+            25% {
+                box-shadow: 0 0 10px 2px orange, inset 0 0 10px 2px orange;
+            }
+            50% {
+                box-shadow: 0 0 10px 2px yellow, inset 0 0 10px 2px yellow;
+            }
+            75% {
+                box-shadow: 0 0 10px 2px green, inset 0 0 10px 2px green;
+            }
+            100% {
+                box-shadow: 0 0 10px 2px blue, inset 0 0 10px 2px blue;
+            }
+        }
+
+        h1 {
+            color: aqua;
+        }
+
+        input {
+            text-align: center;
+            border: 1px solid #fff;
+            width: 250px;
+            height: 30px;
+            background: none;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        input::placeholder {
+            color: #ccc;
+        }
+
+        button {
+            background-color: #fff;
+            color: black;
+            border: none;
+            width: 120px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #081708;
+            color: #fff;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Sign-Up Form</h1>
+        <input type="text" id="username" placeholder="Enter username">
+        <p id="err1" class="error"></p>
+
+        <input type="number" id="mblnumber" placeholder="Enter mobile number">
+        <p id="err2" class="error"></p>
+
+        <input type="email" id="emailid" placeholder="Enter email ID">
+        <p id="err3" class="error"></p>
+
+        <input type="password" id="pass" placeholder="Enter password">
+        <p id="err4" class="error"></p>
+
+        <input type="password" id="pass1" placeholder="Confirm password">
+        <p id="err5" class="error"></p>
+
+        <button onclick="validateform()">Sign-Up</button>
+    </div>
+
+    <script>
+        function validateform() {
+            let username = document.getElementById("username");
+            let mobile = document.getElementById("mblnumber");
+            let email = document.getElementById("emailid");
+            let password = document.getElementById("pass");
+            let password1 = document.getElementById("pass1");
+            let errdata = document.getElementById("err1");
+            let errdata1 = document.getElementById("err2");
+            let errdata2 = document.getElementById("err3");
+            let errdata3 = document.getElementById("err4");
+            let errdata4 = document.getElementById("err5");
+
+            // Reset previous error styles and messages
+            errdata.innerHTML = errdata1.innerHTML = errdata2.innerHTML = errdata3.innerHTML = errdata4.innerHTML = "";
+            username.style.border = mobile.style.border = email.style.border = password.style.border = password1.style.border = "";
+
+            // Validation
+            let isValid = true;
+
+            if (username.value === "") {
+                errdata.innerHTML = "Please enter the username";
+                username.style.border = "1px solid red";
+                isValid = false;
+            }
+
+            if (mobile.value === "") {
+                errdata1.innerHTML = "Please enter the mobile number";
+                mobile.style.border = "1px solid red";
+                isValid = false;
+            }
+
+            if (email.value === "") {
+                errdata2.innerHTML = "Please enter the email ID";
+                email.style.border = "1px solid red";
+                isValid = false;
+            }
+
+            const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!password.value.match(strongPasswordRegex)) {
+                errdata3.innerHTML = "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.";
+                password.style.border = "1px solid red";
+                isValid = false;
+            }
+
+            if (password1.value !== password.value) {
+                errdata4.innerHTML = "Passwords do not match";
+                password1.style.border = "1px solid red";
+                isValid = false;
+            }
+
+            // If form is valid, reload the page and redirect
+            if (isValid) {
+                window.location.href = "./loginform.html";
+            }
+        }
+    </script>
+</body>
+</html>
