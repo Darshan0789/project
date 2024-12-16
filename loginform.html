@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Data Storage</title>
+    <style>
+        body {
+            position: relative;
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 30px;
+            border: 5px solid #65b3ad;
+            width: 400px;
+            margin-left: 350px;
+            margin-top: 10px;
+            font-family: Arial, sans-serif;
+            padding: 100px;
+            padding-top: 20px;
+        }
+        input {
+            text-align: center;
+            border: 1px solid #4e4545;
+            width: 250px;
+            height: 30px;
+            background: none;
+            color: #291e1e;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            margin-left: 20px;
+        }
+
+        @keyframes running-light {
+            0% {
+                box-shadow: 0 0 10px 2px rgb(231, 164, 164), inset 0 0 10px 2px red;
+            }
+            25% {
+                box-shadow: 0 0 10px 2px orange, inset 0 0 10px 2px orange;
+            }
+            50% {
+                box-shadow: 0 0 10px 2px yellow, inset 0 0 10px 2px yellow;
+            }
+            75% {
+                box-shadow: 0 0 10px 2px green, inset 0 0 10px 2px green;
+            }
+            100% {
+                box-shadow: 0 0 10px 2px blue, inset 0 0 10px 2px blue;
+            }
+        }
+        button {
+            background-color: #fff;
+            color: black;
+            border: 1px solid black;
+            width: 120px;
+            height: 40px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #081708;
+            color: #fff;
+        }
+        p.error {
+            color: red;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            padding-left: 2px;
+           margin-right: 25px;
+           margin-left: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding-left: 1px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #fff;
+        }
+        .stored-data {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h2>Sign-Up Form</h2>
+    <input type="text" id="username" placeholder="Enter username">
+    <p id="err1" class="error"></p>
+    
+    <input type="number" id="mblnumber" placeholder="Enter mobile number">
+    <p id="err2" class="error"></p>
+    
+    <input type="email" id="emailid" placeholder="Enter email ID">
+    <p id="err3" class="error"></p>
+    
+    <input type="password" id="pass" placeholder="Enter password">
+    <p id="err4" class="error"></p>
+    
+    <input type="password" id="pass1" placeholder="Confirm password">
+    <p id="err5" class="error"></p>
+    
+    <button onclick="validateForm()">Sign-Up</button>
+
+    <h3>Stored Data:</h3>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Mobile Number</th>
+                <th>Email ID</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        function validateForm() {
+            let username = document.getElementById("username");
+            let mobile = document.getElementById("mblnumber");
+            let email = document.getElementById("emailid");
+            let password = document.getElementById("pass");
+            let password1 = document.getElementById("pass1");
+            let err1 = document.getElementById("err1");
+            let err2 = document.getElementById("err2");
+            let err3 = document.getElementById("err3");
+            let err4 = document.getElementById("err4");
+            let err5 = document.getElementById("err5");
+
+            let isValid = true;
+
+            // Clear previous errors
+            err1.innerHTML = "";
+            err2.innerHTML = "";
+            err3.innerHTML = "";
+            err4.innerHTML = "";
+            err5.innerHTML = "";
+
+            // Validate username
+            if (username.value === "") {
+                err1.innerHTML = "Please enter the username";
+                isValid = false;
+            }
+
+            // Validate mobile number
+            const mobileRegex = /^[0-9]{10}$/;
+            if (!mobile.value.match(mobileRegex)) {
+                err2.innerHTML = "Please enter a valid 10-digit mobile number";
+                isValid = false;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email.value.match(emailRegex)) {
+                err3.innerHTML = "Please enter a valid email ID";
+                isValid = false;
+            }
+
+            // Validate password
+            const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!password.value.match(strongPasswordRegex)) {
+                err4.innerHTML = "Please enter a valid password (min 8 characters, 1 uppercase, 1 number, 1 special char)";
+                isValid = false;
+            }
+
+            // Password confirmation
+            if (password1.value !== password.value) {
+                err5.innerHTML = "Passwords do not match";
+                isValid = false;
+            }
+
+            // If form is valid, store the data in table and clear inputs
+            if (isValid) {
+                // Get the table body
+                const tableBody = document.getElementById("dataTable").getElementsByTagName("tbody")[0];
+                
+                // Create a new row
+                const newRow = tableBody.insertRow();
+
+                // Insert cells and append the input values
+                newRow.insertCell(0).innerText = username.value;
+                newRow.insertCell(1).innerText = mobile.value;
+                newRow.insertCell(2).innerText = email.value;
+                newRow.insertCell(3).innerText = password.value;
+
+                // Clear form inputs
+                username.value = "";
+                mobile.value = "";
+                email.value = "";
+                password.value = "";
+                password1.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
